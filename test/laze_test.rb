@@ -4,7 +4,7 @@ require "lib/laze.rb"
 class LazeTest < Test::Unit::TestCase
 
   def test_map
-    assert (1..2).l_map{|a| a + 1}.is_array [2,3]
+    assert_equal (1..2).l_map{|a| a + 1}.to_a, [2,3]
   end
 
   def test_map_is_lazy
@@ -16,9 +16,6 @@ class LazeTest < Test::Unit::TestCase
 end
 
 class Enumerator
-  def is_array(array)
-    self.to_a == array
-  end
 
   def index_is(index, value)
     self.l_at(index) == value
