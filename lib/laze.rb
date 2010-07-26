@@ -7,18 +7,6 @@ module Enumerable
     nil
   end
 
-  def l_cycle(n = nil)
-    Enumerator.new do |yielder|
-      so_far = 0
-      while(n.nil? || n != so_far)
-        self.each do |val|
-          yielder << val
-        end
-        so_far += 1
-      end
-    end
-  end
-
   def l_drop(n)
     Enumerator.new do |yielder|
       self.each_with_index do |val, index|
@@ -82,7 +70,7 @@ module Enumerable
     end
   end
 
-  #this is disgusting, and reason why Enumerator needs a has_next?
+  #this is disgusting, and the reason why Enumerator needs a has_next?
   def l_zip(*args, &block)
     rators = ([self] + args).map{|arr| arr.each}
     Enumerator.new do |yielder|
