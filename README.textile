@@ -1,8 +1,62 @@
-h1. Laze
+h1. LAZE
 
-Lazy enumerators for Ruby.
+"http://github.com/icambron/laze":http://github.com/icambron/laze
 
-h2. LICENSE
+h2. Summary
+
+Laze implements chainable, lazy enumeration methods in Ruby. For example, laze's
+
+<pre>
+(1..200000)
+        .map_lazy{|i| i * 2}
+        .select_lazy{|i| i % 13}
+        .first
+</pre>
+
+does the same thing as Ruby's
+
+<pre>
+(1..200000)
+        .map{|i| i * 2}
+        .select{|i| i % 13}
+        .first
+</pre>
+
+but it does far less work to get there, only evaluating as much of the sequence as required to produce the answer.
+
+If you know "LINQ":http://msdn.microsoft.com/en-us/library/bb308959.aspx, you'll feel right at home.
+
+h2. Installation
+
+You need Ruby 1.9.1 or above.
+
+Haven't made a gem yet. Coming soon, as soon as we figure out how to do that. In the meantime, you can pull it and require lib/laze.rb and you'll be up running.
+
+h2. Usage
+
+Laze implements lazy versions of many of the methods defined on "Enumerable":http://ruby-doc.org/ruby-1.9/classes/Enumerable.html. If we haven't implemented it, it's probably lazy to begin with. Instead of returning arrays, these methods return enumerators that wrap a thunk. So instead of actually enumerating the enumerable and doing real work, the method hands you an object that promises to do the work when you enumerate _it_.
+
+You can chain the methods, just like you can chain the regular enumerable methods:
+
+<pre>
+(1..100)
+        .map_lazy{|i| i + 3}
+        .drop_while_lazy{|i| < 7}
+        .take_lazy(5)
+        .to_a
+</pre>
+
+But instead of creating an array at each step, the _lazy methods do nothing until an actual answer is asked of them (in this case, the to_a does that), and only examine the minimum number of items required to give that answer (in this case, 12). The lazy operators are even useful on infinite sequences, such as Laze.natural_numbers.
+
+h2. Some notes
+
+Laziness is an awesome tool, and it can be useful for dealing with slow or infinitely long pieces of data. There are also situations where laziness can turn your program into unperformant goo. I plan on putting a more general guide here in the future, but in the meantime, just think carefully about what you're doing.
+
+h2. Next steps
+
+We're just getting started. We need some more documentation, some more generators, and so on. In the long run, we want to build IO and database access methods that return enumerators instead of demanding to be passed a block or returning a big--possibly unecessary--array. We could also use some benchmarks.
+
+h2. License
 
 (The MIT License)
 
