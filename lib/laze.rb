@@ -1,13 +1,13 @@
 module Enumerable
 
-  def l_at(n)
+  def at_lazy(n)
     self.each_with_index do |val, index|
       return val if index == n
     end
     nil
   end
 
-  def l_drop(n)
+  def drop_lazy(n)
     Enumerator.new do |yielder|
       self.each_with_index do |val, index|
         yielder << val if index >= n
@@ -15,7 +15,7 @@ module Enumerable
     end
   end
 
-  def l_drop_while(&block)
+  def drop_while_lazy(&block)
     Enumerator.new do |yielder|
       found = false
       self.each do |val|
@@ -26,7 +26,7 @@ module Enumerable
     end
   end
 
-  def l_grep(pattern, &block)
+  def grep_lazy(pattern, &block)
     get_some do |yielder, val|
       if patter === val
         yeilder << block_given? ? block.(val) : val
@@ -34,25 +34,25 @@ module Enumerable
     end
   end
 
-  def l_map(&block)
+  def map_lazy(&block)
     get_some do |yielder, val|
       yielder << block.(val)
     end
   end
-  alias l_collect l_map
+  alias collect_lazy map_lazy
 
-  def l_reject(&block)
-    self.l_select{|val| !block.(val)}
+  def reject_lazy(&block)
+    self.select_lazy{|val| !block.(val)}
   end
 
-  def l_select(&block)
+  def select_lazy(&block)
     get_some do |yielder, val|
       yielder << val if block.(val)
     end
   end
-  alias l_find_all l_select
+  alias find_all_lazy select_lazy
 
-  def l_take(n)
+  def take_lazy(n)
     Enumerator.new do |yielder|
       self.each_with_index do |val, index|
         break if index >= n
@@ -61,7 +61,7 @@ module Enumerable
     end
   end
 
-  def l_take_while(&block)
+  def take_while_lazy(&block)
     Enumerator.new do |yielder|
       self.each do |val|
         break unless block.(val)
@@ -71,7 +71,7 @@ module Enumerable
   end
 
   #this is disgusting, and the reason why Enumerator needs a has_next?
-  def l_zip(*args, &block)
+  def zip_lazy(*args, &block)
     rators = ([self] + args).map{|arr| arr.each}
     Enumerator.new do |yielder|
       loop do
