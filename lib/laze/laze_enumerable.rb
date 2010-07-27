@@ -8,47 +8,34 @@ module Enumerable
   end
 
   def drop_lazy(n)
-    Enumerator.new do |yielder|
-      self.each_with_index do |val, index|
-        yielder << val if index >= n
-      end
-    end
+    get_some{|yielder, val, index| yielder << val if index >= n}
   end
 
   def drop_while_lazy(&block)
-    Enumerator.new do |yielder|
-      found = false
-      self.each do |val|
-        next if block.(val) && !found
-        found = true
-        yielder << val
-      end
+    found = false
+    get_some do |yielder, val|
+      next if block.(val) && !found
+      found = true
+      yielder << val
     end
   end
 
   def grep_lazy(pattern, &block)
-    get_some do |yielder, val|
-      if pattern === val
-        yielder << (block_given? ? block.(val) : val)
-      end
-    end
+    get_some {|yielder, val| yielder << (block_given? ? block.(val) : val) if pattern === val}
   end
 
   def flatten_lazy(&block)
-    Enumerator.new do |yielder|
-      self.each do |val|
-        block.(val).each do |inner_val|
-          yielder << inner_val
-        end
+    get_some do |yielder, val|
+      block.(val).each do |inner_val|
+        yielder << inner_val
       end
     end
   end
 
   def map_lazy(&block)
-    get_some do |yielder, val|
-      yielder << block.(val)
-    end
+    get_some {|yielder, val| yielder << block.(val)}
   end
+
   alias collect_lazy map_lazy
 
   def reject_lazy(&block)
@@ -56,41 +43,33 @@ module Enumerable
   end
 
   def select_lazy(&block)
-    get_some do |yielder, val|
-      yielder << val if block.(val)
-    end
+    get_some {|yielder, val| yielder << val if block.(val)}
   end
 
   alias find_all_lazy select_lazy
 
-    def slice_lazy(index, length=1)
+  def slice_lazy(index, length=1)
     start, finish = index.begin, index.end if index.instance_of? Range
     start, finish = index, index + length - 1 if index.instance_of? Fixnum
 
-    Enumerator.new do |yielder|
-      self.each_with_index do |val, index|
-        next if index < start
-        break if index > finish
-        yielder << val
-      end
+    get_some do |yielder, val, index|
+      next if index < start
+      throw :done if index > finish
+      yielder << val
     end
   end
 
   def take_lazy(n)
-    Enumerator.new do |yielder|
-      self.each_with_index do |val, index|
-        yielder << val
-        break if index == n-1
-      end
+    get_some do |yielder, val, index|
+      yielder << val
+      throw :done if index == n-1
     end
   end
 
   def take_while_lazy(&block)
-    Enumerator.new do |yielder|
-      self.each do |val|
-        break unless block.(val)
-        yielder << val
-      end
+    get_some do |yielder, val|
+      throw :done unless block.(val)
+      yielder << val
     end
   end
 
@@ -118,8 +97,10 @@ module Enumerable
 
   def get_some
     Enumerator.new do |yielder|
-      self.each do |value|
-        yield yielder, value
+      catch :done do
+        self.each_with_index do |value, index|
+          yield yielder, value, index
+        end
       end
     end
   end
