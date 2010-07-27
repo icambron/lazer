@@ -34,6 +34,12 @@ class LazeTest < Test::Unit::TestCase
     assert_equal 8, Laze.naturals.select_lazy{|i| i % 2 == 0}.at_lazy(3)
   end
 
+  def test_slice
+    assert_equal 7, Laze.naturals.slice_lazy(6).first
+    assert_equal [7, 8, 9], Laze.naturals.slice_lazy(6, 3).to_a
+    assert_equal [7, 8, 9], Laze.naturals.slice_lazy(6..8).to_a
+  end
+
   def test_take
     assert_equal [1, 2], Laze.naturals.take_lazy(2).to_a
     assert_equal 1, angry_enumerator(1).take_lazy(2).first

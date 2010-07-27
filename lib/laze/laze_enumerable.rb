@@ -60,7 +60,21 @@ module Enumerable
       yielder << val if block.(val)
     end
   end
+
   alias find_all_lazy select_lazy
+
+    def slice_lazy(index, length=1)
+    start, finish = index.begin, index.end if index.instance_of? Range
+    start, finish = index, index + length - 1 if index.instance_of? Fixnum
+
+    Enumerator.new do |yielder|
+      self.each_with_index do |val, index|
+        next if index < start
+        break if index > finish
+        yielder << val
+      end
+    end
+  end
 
   def take_lazy(n)
     Enumerator.new do |yielder|
