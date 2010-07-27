@@ -46,7 +46,7 @@ You can chain the methods, just like you can chain the regular enumerable method
         .to_a
 </pre>
 
-But instead of creating an array at each step, the _lazy methods do nothing until an actual answer is asked of them (in this case, the to_a does that), and only examine the minimum number of items required to give that answer (in this case, 12). The lazy operators are even useful on infinite sequences, such as Laze.natural_numbers.
+But instead of creating an array at each step, the lazy methods do nothing until an actual answer is asked of them (in this case, the to_a does that), and only examine the minimum number of items required to give that answer (in this case, 12). The lazy operators are even useful on infinite sequences, such as Laze.natural_numbers.
 
 h2. Some notes
 
