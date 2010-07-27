@@ -34,6 +34,16 @@ module Enumerable
     end
   end
 
+  def flatten_lazy(&block)
+    Enumerator.new do |yielder|
+      self.each do |val|
+        block.(val).each do |inner_val|
+          yielder << inner_val
+        end
+      end
+    end
+  end
+
   def map_lazy(&block)
     get_some do |yielder, val|
       yielder << block.(val)
@@ -66,16 +76,6 @@ module Enumerable
       self.each do |val|
         break unless block.(val)
         yielder << val
-      end
-    end
-  end
-
-  def flatten_lazy(&block)
-    Enumerator.new do |yielder|
-      self.each do |val|
-        block.(val).each do |inner_val|
-          yielder << inner_val
-        end
       end
     end
   end
