@@ -55,8 +55,8 @@ module Enumerable
   def take_lazy(n)
     Enumerator.new do |yielder|
       self.each_with_index do |val, index|
-        break if index >= n
         yielder << val
+        break if index == n-1
       end
     end
   end
@@ -66,6 +66,16 @@ module Enumerable
       self.each do |val|
         break unless block.(val)
         yielder << val
+      end
+    end
+  end
+
+  def flatten_lazy(&block)
+    Enumerator.new do |yielder|
+      self.each do |val|
+        block.(val).each do |inner_val|
+          yielder << inner_val
+        end
       end
     end
   end

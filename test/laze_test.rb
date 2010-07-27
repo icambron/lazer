@@ -42,6 +42,11 @@ class LazeTest < Test::Unit::TestCase
     assert_equal [1, 2, 3], Laze.naturals.take(3).to_a
   end
 
+  # test that we'relazy not only on the outer enumerator but also if the block makes use of lazy enumerators
+  def test_flatten
+    assert_equal ['11','21','22','31','32','33', '41'], Laze.naturals.flatten_lazy{|n| Laze.naturals.map_lazy{|m| "#{n}#{m}"}.take(n)}.take(7)
+  end
+
   def test_zip_lazy
     assert_equal [1, 1], Laze.naturals.zip_lazy(1..2).first
     assert_equal [3, nil], Laze.naturals.zip_lazy(1..2).at_lazy(2)
