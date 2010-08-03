@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.summary = %q{Lazy Enumerators for Ruby}
   s.description = %q{Laze is a set lazy implemetations of Enumerable methods}
   s.authors = [%q{Isaac Camberon}, %q{Jonathan Palmer}]
-#  s.email = %q{rmagick@rubyforge.org}
+#  s.email = %q{support@domain.com}
   s.homepage = %q{http://github.com/icambron/laze}
   s.files = FileList["{bin,lib}/**/*"].to_a
   s.require_path = "lib"
