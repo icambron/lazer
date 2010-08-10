@@ -1,10 +1,10 @@
-h1. LAZE
+h1. LAZER
 
-"http://github.com/icambron/laze":http://github.com/icambron/laze
+"http://github.com/icambron/laze":http://github.com/icambron/lazer
 
 h2. Summary
 
-Laze implements chainable, lazy enumeration methods in Ruby. For example, laze's
+Lazer implements chainable, lazy enumeration methods in Ruby. For example, lazer's
 
 <pre>
 (1..200000)
@@ -30,11 +30,11 @@ h2. Installation
 
 You need Ruby 1.9.1 or above.
 
-Haven't made a gem yet. Coming soon, as soon as we figure out how to do that. In the meantime, you can pull it and require lib/laze.rb and you'll be up running.
+Haven't made a gem yet. Coming soon, as soon as we figure out how to do that. In the meantime, you can pull it and require lib/lazer.rb and you'll be up running.
 
 h2. Usage
 
-Laze implements lazy versions of many of the methods defined on "Enumerable":http://ruby-doc.org/ruby-1.9/classes/Enumerable.html. If we haven't implemented it, it's probably lazy to begin with. Instead of returning arrays, these methods return enumerators that wrap a thunk. So instead of actually enumerating the enumerable and doing real work, the method hands you an object that promises to do the work when you enumerate _it_.
+Lazer implements lazy versions of many of the methods defined on "Enumerable":http://ruby-doc.org/ruby-1.9/classes/Enumerable.html. If we haven't implemented it, it's probably lazy to begin with. Instead of returning arrays, these methods return enumerators that wrap a thunk. So instead of actually enumerating the enumerable and doing real work, the method hands you an object that promises to do the work when you enumerate _it_.
 
 You can chain the methods, just like you can chain the regular enumerable methods:
 
@@ -46,7 +46,7 @@ You can chain the methods, just like you can chain the regular enumerable method
         .to_a
 </pre>
 
-But instead of creating an array at each step, the lazy methods do nothing until an actual answer is asked of them (in this case, the to_a does that), and only examine the minimum number of items required to give that answer (in this case, 12). The lazy operators are even useful on infinite sequences, such as Laze.natural_numbers.
+But instead of creating an array at each step, the lazy methods do nothing until an actual answer is asked of them (in this case, the to_a does that), and only examine the minimum number of items required to give that answer (in this case, 12). The lazy operators are even useful on infinite sequences, such as Lazer.natural_numbers.
 
 h2. Some notes
 
