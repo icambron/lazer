@@ -1,6 +1,6 @@
 h1. LAZER
 
-"http://github.com/icambron/laze":http://github.com/icambron/lazer
+"http://github.com/icambron/lazer":http://github.com/icambron/lazer
 
 h2. Summary
 
