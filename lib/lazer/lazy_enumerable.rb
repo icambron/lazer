@@ -1,5 +1,4 @@
 module Enumerable
-
   def at_lazy(n)
     self.each_with_index do |val, index|
       return val if index == n

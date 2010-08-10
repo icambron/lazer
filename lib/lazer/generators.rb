@@ -1,5 +1,5 @@
-module Laze
-  def Laze.naturals
+module Lazer
+  def Lazer.naturals
     Enumerator.new do |yielder|
       number = 1
       loop do
