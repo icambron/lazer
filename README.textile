@@ -28,11 +28,19 @@ If you know "LINQ":http://msdn.microsoft.com/en-us/library/bb308959.aspx, you'll
 
 h2. Installation
 
-You need Ruby 1.9.1 or above.
+You need Ruby 1.9.1 or above. All you need to do is
 
-Haven't made a gem yet. Coming soon, as soon as we figure out how to do that. In the meantime, you can pull it and require lib/lazer.rb and you'll be up running.
+<pre>
+gem install lazer
+</pre>
 
 h2. Usage
+
+First off:
+
+<pre>
+require 'lazer'
+</pre>
 
 Lazer implements lazy versions of many of the methods defined on "Enumerable":http://ruby-doc.org/ruby-1.9/classes/Enumerable.html. If we haven't implemented it, it's probably lazy to begin with. Instead of returning arrays, these methods return enumerators that wrap a thunk. So instead of actually enumerating the enumerable and doing real work, the method hands you an object that promises to do the work when you enumerate _it_.
 
