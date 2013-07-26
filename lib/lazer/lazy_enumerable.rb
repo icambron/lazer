@@ -79,7 +79,7 @@ module Enumerable
       loop do
         answer = rators.map do |rator|
           begin
-            [rator.better_next, true]
+            [better_next(rator), true]
           rescue StopIteration
             [nil, false]
           end
@@ -103,15 +103,13 @@ module Enumerable
       end
     end
   end
-end
 
-class Enumerator
-  def better_next
+  def better_next(iterator)
     if @no_more
       raise StopIteration
     else
       begin
-        self.next
+        iterator.next
       rescue StopIteration
         @no_more = true
         raise StopIteration
